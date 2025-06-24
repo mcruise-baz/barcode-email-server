@@ -1,0 +1,10 @@
+{
+  "name": "barcode-email-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "jsbarcode": "^3.11.5"
+  }
+}
