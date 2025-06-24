@@ -1,8 +1,8 @@
-const { SVG, registerWindow } = require('@svgdotjs/svg.js');
-const { createSVGWindow } = require('svgdom');
-const JsBarcode = require('jsbarcode');
+import { SVG, registerWindow } from '@svgdotjs/svg.js';
+import { createSVGWindow } from 'svgdom';
+import JsBarcode from 'jsbarcode';
 
-module.exports = (req, res) => {
+export default function handler(req, res) {
   const { code } = req.query;
 
   if (!code) {
@@ -36,5 +36,5 @@ module.exports = (req, res) => {
 
   // Return SVG with correct content-type header
   res.setHeader("Content-Type", "image/svg+xml");
-  res.send(svgString);
-};
+  res.end(svgString);
+}
