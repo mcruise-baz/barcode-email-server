@@ -1,8 +1,6 @@
-import { SVG, registerWindow } from '@svgdotjs/svg.js';
-import { createSVGWindow } from 'svgdom';
-import JsBarcode from 'jsbarcode';
+import bwipjs from 'bwip-js';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { code } = req.query;
 
   if (!code) {
@@ -10,31 +8,19 @@ export default function handler(req, res) {
     return;
   }
 
-  // Setup SVG window & document for JsBarcode to render into
-  const window = createSVGWindow();
-  const document = window.document;
-  registerWindow(window, document);
+  try {
+    const png = await bwipjs.toBuffer({
+      bcid:        'code128',
+      text:        code,
+      scale:       3,
+      height:      10,
+      includetext: false,
+      backgroundcolor: 'FFFFFF00', // Transparent
+    });
 
-  const draw = SVG(document.documentElement);
-
-  // Create an SVG element 600x150
-  const svg = draw.size(600, 150);
-
-  // Generate barcode on the SVG element
-  JsBarcode(svg.node, code, {
-    format: "CODE128",
-    displayValue: false,
-    background: "none",
-    lineColor: "#000",
-    width: 3,
-    height: 100,
-    margin: 0,
-  });
-
-  // Output SVG string
-  const svgString = svg.svg();
-
-  // Return SVG with correct content-type header
-  res.setHeader("Content-Type", "image/svg+xml");
-  res.end(svgString);
+    res.setHeader('Content-Type', 'image/png');
+    res.send(png);
+  } catch (err) {
+    res.status(500).send('Barcode generation failed');
+  }
 }
