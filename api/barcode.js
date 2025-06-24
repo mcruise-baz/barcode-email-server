@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       text:        code,
       scale:       3,
       height:      10,
-      includetext: true,
+      includetext: false,
       backgroundcolor: 'ffab01', // Transparent
     });
 
