@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       scale:       3,
       height:      10,
       includetext: false,
-      backgroundcolor: 'ffab01', // Transparent
+      backgroundcolor: 'transparent', // Transparent
     });
 
     res.setHeader('Content-Type', 'image/png');
